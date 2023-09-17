@@ -61,8 +61,52 @@ public class Program {
             assert queue.dequeue() == 25;
             assert queue.peek() == 26;
             assert queue.getSize() == 1;
+        }
 
+        {
+            Stack stack = new Stack();
 
+            stack.push(20);
+            stack.push(21); // stack: 21
+            //        20
+            stack.push(22); // stack: 21
+            stack.push(23); // stack: 21
+
+            assert (stack.pop() == 23);
+            assert (stack.pop() == 22);
+            assert stack.pop() == 21;
+            assert stack.pop() == 20;
+
+            stack.push(20);
+            stack.push(21); // stack: 21
+            //        20
+            stack.push(22); // stack: 21
+            stack.push(23); // stack: 21
+
+            assert stack.peek() == 23;
+
+        }
+
+        {
+            Stack stack = new Stack();
+
+            stack.push(20); // stack: 20
+
+            assert (stack.peek() == 20);
+
+            stack.push(21); // stack: 21
+            //        20
+
+            assert (stack.peek() == 21);
+        }
+
+        {
+            Stack stack  = new Stack();
+
+            stack.push(20);
+            stack.push(21);
+
+            assert (stack.getSize() == 2);
         }
 
 
