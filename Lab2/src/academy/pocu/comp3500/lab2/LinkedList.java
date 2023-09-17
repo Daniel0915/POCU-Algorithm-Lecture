@@ -77,6 +77,11 @@ public final class LinkedList {
     }
 
     public static Node removeAt(final Node rootOrNull, final int index) {
+        if (rootOrNull == null) {
+            return null;
+        }
+
+
         int lastNodeIndex = 0;
         Node lastNode = rootOrNull;
         while (lastNode.getNextOrNull() != null) {
@@ -85,8 +90,8 @@ public final class LinkedList {
         }
 
         // 삭제 index 가 현재 Node의 index 범위에 벗어나면, null 반환
-        if (lastNodeIndex < index) {
-            return null;
+        if (lastNodeIndex < index || index < 0) {
+            return rootOrNull;
         }
 
 
@@ -99,7 +104,7 @@ public final class LinkedList {
         // 마지막 노드 삭제
         if (index == lastNodeIndex) {
             // 마지막 노드 전 노드
-            Node preNode = rootOrNull.getNextOrNull();
+            Node preNode = rootOrNull;
             for (int i = 0; i < lastNodeIndex -1; i++) {
                 preNode = preNode.getNextOrNull();
             }

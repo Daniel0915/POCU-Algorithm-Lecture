@@ -55,6 +55,7 @@ public final class Stack {
     public int getSize() {
         int lastIndex = 0;
         Node lastNode = rootNode;
+
         while (lastNode.getNextOrNull() != null) {
             lastNode = lastNode.getNextOrNull();
             lastIndex++;
