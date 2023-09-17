@@ -4,6 +4,8 @@ import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class Queue {
     private Node rootNode;
+    private int front = 0;
+    private int back = 0;
 
     public void enqueue(final int data) {
         if (rootNode == null) {
@@ -11,6 +13,7 @@ public final class Queue {
             return;
         }
         rootNode = LinkedList.append(rootNode, data);
+        back++;
     }
 
     public int peek() {
@@ -20,16 +23,11 @@ public final class Queue {
     public int dequeue() {
         int deleteValue = rootNode.getData();
         rootNode = rootNode.getNextOrNull();
+        front++;
         return deleteValue;
     }
 
     public int getSize() {
-        int lastIndex = 0;
-        Node lastNode = rootNode;
-        while (lastNode.getNextOrNull() !=null) {
-            lastNode = lastNode.getNextOrNull();
-            lastIndex++;
-        }
-        return lastIndex + 1;
+        return back - front;
     }
 }
