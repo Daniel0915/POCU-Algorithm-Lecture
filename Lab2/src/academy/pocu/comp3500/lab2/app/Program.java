@@ -9,6 +9,59 @@ public class Program {
 
     public static void main(String[] args) {
         {
+            Queue queue = new Queue();
+
+            queue.enqueue(20); // queue: 20
+            queue.enqueue(21); // queue: 20, 21
+            queue.enqueue(22); // queue: 20, 21, 22
+            queue.enqueue(23); // queue: 20, 21, 23
+            queue.enqueue(24); // queue: 20, 21, 23, 24
+
+            assert queue.getBack() == 5;
+            assert queue.getFront() == 0;
+
+            assert queue.dequeue() == 20;
+            assert queue.peek() == 21;
+            assert queue.getFront() == 1;
+            assert queue.getBack() == 5;
+            assert queue.getSize() == 4;
+
+            assert queue.dequeue() == 21;
+            assert queue.peek() == 22;
+            assert queue.getFront() == 2;
+            assert queue.getBack() == 5;
+            assert queue.getSize() == 3;
+
+            assert queue.dequeue() == 22;
+            assert queue.peek() == 23;
+            assert queue.getFront() == 3;
+            assert queue.getBack() == 5;
+            assert queue.getSize() == 2;
+
+            assert queue.dequeue() == 23;
+            assert queue.peek() == 24;
+            assert queue.getFront() == 4;
+            assert queue.getBack() == 5;
+            assert queue.getSize() == 1;
+
+            assert queue.dequeue() == 24;
+            assert queue.getFront() == 5;
+            assert queue.getBack() == 5;
+            assert queue.getSize() == 0;
+
+            assert queue.getSize() == 0;
+            queue.enqueue(25);
+            assert queue.peek() == 25;
+            assert queue.getSize() == 1;
+
+
+        }
+
+
+
+
+
+        {
             testRemoveAt();
             testInsertAt();
             test4();

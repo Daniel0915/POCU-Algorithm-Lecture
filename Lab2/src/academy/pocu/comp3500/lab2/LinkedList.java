@@ -12,12 +12,6 @@ public final class LinkedList {
             return head;
         }
 
-//        int lastNodeIndex = 0;
-//
-//        while (rootOrNull.getNextOrNull() != null) {
-//            lastNodeIndex++;
-//        }
-
         Node newNode = new Node(data);
 
         Node node = rootOrNull;
@@ -30,7 +24,6 @@ public final class LinkedList {
 
         // 가장 마지막 노드에 새로 생성된 노드의 주소를 setter
         node.setNext(newNode);
-//        lastNodeIndex++;
 
         return rootOrNull;
     }
@@ -39,7 +32,6 @@ public final class LinkedList {
         Node newNode = new Node(data);
 
         newNode.setNext(rootOrNull);
-//        lastNodeIndex++;
 
         return newNode;
     }
@@ -251,7 +243,7 @@ public final class LinkedList {
 
         int lastIndex = 0;
         Node nextNode = node;
-        while(nextNode.getNextOrNull() != null) {
+        while (nextNode.getNextOrNull() != null) {
             nextNode = nextNode.getNextOrNull();
             lastIndex++;
         }

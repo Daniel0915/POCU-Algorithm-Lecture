@@ -22,6 +22,9 @@ public final class Queue {
     }
 
     public int dequeue() {
+        if (front == back) {
+            System.out.println("queue 가 비어 있습니다.");
+        }
         int deleteValue = rootNode.getData();
         rootNode = rootNode.getNextOrNull();
         front++;
@@ -30,5 +33,13 @@ public final class Queue {
 
     public int getSize() {
         return back - front;
+    }
+
+    public int getFront() {
+        return front;
+    }
+
+    public int getBack() {
+        return back;
     }
 }
