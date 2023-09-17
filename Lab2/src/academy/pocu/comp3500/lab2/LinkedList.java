@@ -3,7 +3,6 @@ package academy.pocu.comp3500.lab2;
 import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class LinkedList {
-    private LinkedList() { }
 
     public static Node append(final Node rootOrNull, final int data) {
         if (rootOrNull == null) {
@@ -38,7 +37,7 @@ public final class LinkedList {
     public static Node insertAt(final Node rootOrNull, final int index, final int data) {
         int lastNodeIndex = 0;
         Node lastNode = rootOrNull;
-        while(lastNode.getNextOrNull() != null) {
+        while (lastNode.getNextOrNull() != null) {
             lastNode = lastNode.getNextOrNull();
             lastNodeIndex++;
         }
@@ -62,7 +61,7 @@ public final class LinkedList {
         }
 
         // insert 해야하는 노드 앞
-        Node preNode= rootOrNull;
+        Node preNode = rootOrNull;
         for (int i = 0; i < index - 1; i++) {
             preNode = preNode.getNextOrNull();
         }
@@ -80,7 +79,7 @@ public final class LinkedList {
     public static Node removeAt(final Node rootOrNull, final int index) {
         int lastNodeIndex = 0;
         Node lastNode = rootOrNull;
-        while(lastNode.getNextOrNull() != null) {
+        while (lastNode.getNextOrNull() != null) {
             lastNode = lastNode.getNextOrNull();
             lastNodeIndex++;
         }
@@ -114,7 +113,7 @@ public final class LinkedList {
         // 중간 노드 삭제
         // 삭제 대상 전 노드
         Node preNode = rootOrNull;
-        for(int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index - 1; i++) {
             preNode = preNode.getNextOrNull();
         }
 
@@ -192,7 +191,7 @@ public final class LinkedList {
     public static Node reverse(final Node rootOrNull) {
         Node lastNode = rootOrNull;
         int lastNodeIndex = 0;
-        while (lastNode.getNextOrNull() !=null) {
+        while (lastNode.getNextOrNull() != null) {
             lastNode = lastNode.getNextOrNull();
             lastNodeIndex++;
         }
@@ -209,7 +208,7 @@ public final class LinkedList {
     public static Node interleaveOrNull(final Node root0OrNull, final Node root1OrNull) {
         Node root00LastNode = root0OrNull;
         int root00LastIndex = 0;
-        while (root00LastNode.getNextOrNull() !=null) {
+        while (root00LastNode.getNextOrNull() != null) {
             root00LastNode = root00LastNode.getNextOrNull();
             root00LastIndex++;
         }
@@ -217,7 +216,7 @@ public final class LinkedList {
 
         Node root10LastNode = root1OrNull;
         int root10LastIndex = 0;
-        while (root10LastNode.getNextOrNull() !=null) {
+        while (root10LastNode.getNextOrNull() != null) {
             root10LastNode = root10LastNode.getNextOrNull();
             root10LastIndex++;
         }
