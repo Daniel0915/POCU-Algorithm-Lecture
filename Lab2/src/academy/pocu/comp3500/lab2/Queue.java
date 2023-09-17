@@ -4,6 +4,7 @@ import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class Queue {
     private Node rootNode;
+    private Node tailNode;
     private int front = 0;
     private int back = 0;
 
@@ -13,7 +14,16 @@ public final class Queue {
             back++;
             return;
         }
-        rootNode = LinkedList.append(rootNode, data);
+
+        Node newNode = new Node(data);
+
+        Node node = rootNode;
+
+        for (int i = 0; i < getSize() - 1; i++) {
+            node = node.getNextOrNull();
+        }
+
+        node.setNext(newNode);
         back++;
     }
 
