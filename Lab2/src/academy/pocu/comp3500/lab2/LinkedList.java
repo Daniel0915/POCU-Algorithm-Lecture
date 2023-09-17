@@ -19,8 +19,8 @@ public final class LinkedList {
 
         // 노드의 next 가 null 아니면 있다면 다음 노드로 이동
         // 가장 마지막 노드는 next 가 null 을 가짐으로, 가장 마지막 노드를 찾으면 while 문 out
-        while (node.getNextOrNull() != null) {
-            node = node.getNextOrNull();
+        while (rootOrNull.getNextOrNull() != null) {
+            node = rootOrNull.getNextOrNull();
         }
 
         // 가장 마지막 노드에 새로 생성된 노드의 주소를 setter
@@ -40,10 +40,13 @@ public final class LinkedList {
     }
 
     public static Node insertAt(final Node rootOrNull, final int index, final int data) {
+        if (index < 0) {
+            return rootOrNull;
+        }
 
         // index가 유효한 범위 밖이라면 아무 일도 일어나지 않습니다.
-        if (lastNodeIndex < index) {
-            return null;
+        if (lastNodeIndex < index - 1) {
+            return rootOrNull;
         }
 
         // 첫번째 index 에 넣을 때
@@ -91,7 +94,7 @@ public final class LinkedList {
         if (index == lastNodeIndex) {
             // 마지막 노드 전 노드
             Node preNode = rootOrNull;
-            for (int i = 0; i < lastNodeIndex -1; i++) {
+            for (int i = 0; i < lastNodeIndex - 1; i++) {
                 preNode = preNode.getNextOrNull();
             }
 
