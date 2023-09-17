@@ -3,7 +3,6 @@ package academy.pocu.comp3500.lab2.datastructure;
 public final class Node {
     private final int data;
     private Node next;
-
     public Node(final int data) {
         this.data = data;
     }
