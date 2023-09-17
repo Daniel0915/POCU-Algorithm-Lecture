@@ -54,12 +54,6 @@ public final class LinkedList {
             return newNode;
         }
 
-        // insert 해야하는 노드 뒤
-        Node afterNode = rootOrNull;
-        for (int i = 0; i < index; i++) {
-            afterNode = afterNode.getNextOrNull();
-        }
-
         // insert 해야하는 노드 앞
         Node preNode = rootOrNull;
         for (int i = 0; i < index - 1; i++) {
@@ -67,10 +61,8 @@ public final class LinkedList {
         }
 
         Node newNode = new Node(data);
-
+        newNode.setNext(preNode.getNextOrNull());
         preNode.setNext(newNode);
-
-        newNode.setNext(afterNode);
 
         return rootOrNull;
 
@@ -80,7 +72,6 @@ public final class LinkedList {
         if (rootOrNull == null) {
             return null;
         }
-
 
         int lastNodeIndex = 0;
         Node lastNode = rootOrNull;
