@@ -3,10 +3,13 @@ package academy.pocu.comp3500.lab2;
 import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class LinkedList {
+    private static int lastNodeIndex;
 
     public static Node append(final Node rootOrNull, final int data) {
         if (rootOrNull == null) {
             Node head = new Node(data);
+            // 초기화
+            lastNodeIndex = 0;
             return head;
         }
 
@@ -22,6 +25,7 @@ public final class LinkedList {
 
         // 가장 마지막 노드에 새로 생성된 노드의 주소를 setter
         node.setNext(newNode);
+        lastNodeIndex++;
 
         return rootOrNull;
     }
@@ -30,17 +34,12 @@ public final class LinkedList {
         Node newNode = new Node(data);
 
         newNode.setNext(rootOrNull);
+        lastNodeIndex++;
 
         return newNode;
     }
 
     public static Node insertAt(final Node rootOrNull, final int index, final int data) {
-        int lastNodeIndex = 0;
-        Node lastNode = rootOrNull;
-        while (lastNode.getNextOrNull() != null) {
-            lastNode = lastNode.getNextOrNull();
-            lastNodeIndex++;
-        }
 
         // index가 유효한 범위 밖이라면 아무 일도 일어나지 않습니다.
         if (lastNodeIndex < index) {
@@ -51,6 +50,7 @@ public final class LinkedList {
         if (index == 0) {
             Node newNode = new Node(data);
             newNode.setNext(rootOrNull);
+            lastNodeIndex++;
             return newNode;
         }
 
@@ -63,6 +63,7 @@ public final class LinkedList {
         Node newNode = new Node(data);
         newNode.setNext(preNode.getNextOrNull());
         preNode.setNext(newNode);
+        lastNodeIndex++;
 
         return rootOrNull;
 
@@ -71,13 +72,6 @@ public final class LinkedList {
     public static Node removeAt(final Node rootOrNull, final int index) {
         if (rootOrNull == null) {
             return null;
-        }
-
-        int lastNodeIndex = 0;
-        Node lastNode = rootOrNull;
-        while (lastNode.getNextOrNull() != null) {
-            lastNode = lastNode.getNextOrNull();
-            lastNodeIndex++;
         }
 
         // 삭제 index 가 현재 Node의 index 범위에 벗어나면, null 반환
@@ -89,6 +83,7 @@ public final class LinkedList {
         // 첫번째 노드 삭제
         if (index == 0) {
             Node rootNode = rootOrNull.getNextOrNull();
+            lastNodeIndex--;
             return rootNode;
         }
 
@@ -102,7 +97,7 @@ public final class LinkedList {
 
             // 마지막 노드
             preNode.setNext(null);
-            lastNode = null;
+            lastNodeIndex--;
             return rootOrNull;
         }
 
@@ -113,9 +108,8 @@ public final class LinkedList {
             preNode = preNode.getNextOrNull();
         }
 
-        Node deleteNode = preNode.getNextOrNull();
         preNode.setNext(preNode.getNextOrNull().getNextOrNull());
-        deleteNode = null;
+        lastNodeIndex--;
 
         return rootOrNull;
     }
@@ -185,16 +179,11 @@ public final class LinkedList {
     }
 
     public static Node reverse(final Node rootOrNull) {
-        Node lastNode = rootOrNull;
-        int lastNodeIndex = 0;
-        while (lastNode.getNextOrNull() != null) {
-            lastNode = lastNode.getNextOrNull();
-            lastNodeIndex++;
-        }
+        int nowLastNodeIndex = lastNodeIndex;
 
-        Node reverseNode = append(null, lastNode.getData());
+        Node reverseNode = append(null, getOrNull(rootOrNull, nowLastNodeIndex).getData());
 
-        for (int i = lastNodeIndex - 1; i >= 0; i--) {
+        for (int i = nowLastNodeIndex - 1; i >= 0; i--) {
             reverseNode = append(reverseNode, getOrNull(rootOrNull, i).getData());
         }
 
