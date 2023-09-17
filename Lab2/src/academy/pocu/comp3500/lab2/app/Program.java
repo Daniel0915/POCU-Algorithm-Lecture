@@ -54,6 +54,14 @@ public class Program {
             assert queue.peek() == 25;
             assert queue.getSize() == 1;
 
+            queue.enqueue(26);
+            assert queue.peek() == 25;
+            assert queue.getSize() == 2;
+
+            assert queue.dequeue() == 25;
+            assert queue.peek() == 26;
+            assert queue.getSize() == 1;
+
 
         }
 

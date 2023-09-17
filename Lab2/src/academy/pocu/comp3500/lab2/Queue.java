@@ -11,19 +11,15 @@ public final class Queue {
     public void enqueue(final int data) {
         if (rootNode == null) {
             rootNode = new Node(data);
+            tailNode = rootNode;
             back++;
             return;
         }
 
         Node newNode = new Node(data);
+        tailNode.setNext(newNode);
+        tailNode = newNode;
 
-        Node node = rootNode;
-
-        for (int i = 0; i < getSize() - 1; i++) {
-            node = node.getNextOrNull();
-        }
-
-        node.setNext(newNode);
         back++;
     }
 
@@ -32,9 +28,6 @@ public final class Queue {
     }
 
     public int dequeue() {
-        if (front == back) {
-            System.out.println("queue 가 비어 있습니다.");
-        }
         int deleteValue = rootNode.getData();
         rootNode = rootNode.getNextOrNull();
         front++;
