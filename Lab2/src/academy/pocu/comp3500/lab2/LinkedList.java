@@ -3,15 +3,20 @@ package academy.pocu.comp3500.lab2;
 import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class LinkedList {
-    private static int lastNodeIndex;
+//    private int lastNodeIndex = 0;
 
     public static Node append(final Node rootOrNull, final int data) {
         if (rootOrNull == null) {
             Node head = new Node(data);
             // 초기화
-            lastNodeIndex = 0;
             return head;
         }
+
+//        int lastNodeIndex = 0;
+//
+//        while (rootOrNull.getNextOrNull() != null) {
+//            lastNodeIndex++;
+//        }
 
         Node newNode = new Node(data);
 
@@ -19,13 +24,13 @@ public final class LinkedList {
 
         // 노드의 next 가 null 아니면 있다면 다음 노드로 이동
         // 가장 마지막 노드는 next 가 null 을 가짐으로, 가장 마지막 노드를 찾으면 while 문 out
-        while (rootOrNull.getNextOrNull() != null) {
-            node = rootOrNull.getNextOrNull();
+        while (node.getNextOrNull() != null) {
+            node = node.getNextOrNull();
         }
 
         // 가장 마지막 노드에 새로 생성된 노드의 주소를 setter
         node.setNext(newNode);
-        lastNodeIndex++;
+//        lastNodeIndex++;
 
         return rootOrNull;
     }
@@ -34,7 +39,7 @@ public final class LinkedList {
         Node newNode = new Node(data);
 
         newNode.setNext(rootOrNull);
-        lastNodeIndex++;
+//        lastNodeIndex++;
 
         return newNode;
     }
@@ -43,6 +48,8 @@ public final class LinkedList {
         if (index < 0) {
             return rootOrNull;
         }
+
+        int lastNodeIndex = getNodeLastIndex(rootOrNull);
 
         // index가 유효한 범위 밖이라면 아무 일도 일어나지 않습니다.
         if (lastNodeIndex < index - 1) {
@@ -53,7 +60,6 @@ public final class LinkedList {
         if (index == 0) {
             Node newNode = new Node(data);
             newNode.setNext(rootOrNull);
-            lastNodeIndex++;
             return newNode;
         }
 
@@ -66,7 +72,6 @@ public final class LinkedList {
         Node newNode = new Node(data);
         newNode.setNext(preNode.getNextOrNull());
         preNode.setNext(newNode);
-        lastNodeIndex++;
 
         return rootOrNull;
 
@@ -77,6 +82,8 @@ public final class LinkedList {
             return null;
         }
 
+        int lastNodeIndex = getNodeLastIndex(rootOrNull);
+
         // 삭제 index 가 현재 Node의 index 범위에 벗어나면, null 반환
         if (lastNodeIndex < index || index < 0) {
             return rootOrNull;
@@ -86,7 +93,6 @@ public final class LinkedList {
         // 첫번째 노드 삭제
         if (index == 0) {
             Node rootNode = rootOrNull.getNextOrNull();
-            lastNodeIndex--;
             return rootNode;
         }
 
@@ -100,7 +106,6 @@ public final class LinkedList {
 
             // 마지막 노드
             preNode.setNext(null);
-            lastNodeIndex--;
             return rootOrNull;
         }
 
@@ -112,7 +117,6 @@ public final class LinkedList {
         }
 
         preNode.setNext(preNode.getNextOrNull().getNextOrNull());
-        lastNodeIndex--;
 
         return rootOrNull;
     }
@@ -182,11 +186,11 @@ public final class LinkedList {
     }
 
     public static Node reverse(final Node rootOrNull) {
-        int nowLastNodeIndex = lastNodeIndex;
+        int lastNodeIndex = getNodeLastIndex(rootOrNull);
 
-        Node reverseNode = append(null, getOrNull(rootOrNull, nowLastNodeIndex).getData());
+        Node reverseNode = append(null, getOrNull(rootOrNull, lastNodeIndex).getData());
 
-        for (int i = nowLastNodeIndex - 1; i >= 0; i--) {
+        for (int i = lastNodeIndex - 1; i >= 0; i--) {
             reverseNode = append(reverseNode, getOrNull(rootOrNull, i).getData());
         }
 
@@ -196,17 +200,21 @@ public final class LinkedList {
     public static Node interleaveOrNull(final Node root0OrNull, final Node root1OrNull) {
         Node root00LastNode = root0OrNull;
         int root00LastIndex = 0;
-        while (root00LastNode.getNextOrNull() != null) {
-            root00LastNode = root00LastNode.getNextOrNull();
-            root00LastIndex++;
+        if (root0OrNull != null) {
+            while (root00LastNode.getNextOrNull() != null) {
+                root00LastNode = root00LastNode.getNextOrNull();
+                root00LastIndex++;
+            }
         }
 
 
         Node root10LastNode = root1OrNull;
         int root10LastIndex = 0;
-        while (root10LastNode.getNextOrNull() != null) {
-            root10LastNode = root10LastNode.getNextOrNull();
-            root10LastIndex++;
+        if (root1OrNull != null) {
+            while (root10LastNode.getNextOrNull() != null) {
+                root10LastNode = root10LastNode.getNextOrNull();
+                root10LastIndex++;
+            }
         }
 
         int maxIndex = Math.max(root00LastIndex, root10LastIndex);
@@ -234,5 +242,19 @@ public final class LinkedList {
         }
 
         return interleaveNode;
+    }
+
+    private static int getNodeLastIndex(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int lastIndex = 0;
+        Node nextNode = node;
+        while(nextNode.getNextOrNull() != null) {
+            nextNode = nextNode.getNextOrNull();
+            lastIndex++;
+        }
+        return lastIndex;
     }
 }
