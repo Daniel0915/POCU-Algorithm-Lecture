@@ -10,6 +10,7 @@ public final class Queue {
     public void enqueue(final int data) {
         if (rootNode == null) {
             rootNode = new Node(data);
+            back++;
             return;
         }
         rootNode = LinkedList.append(rootNode, data);
