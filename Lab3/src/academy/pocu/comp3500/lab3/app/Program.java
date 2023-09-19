@@ -14,6 +14,15 @@ public class Program {
             assert (maxAltitudeTime == 6);
         }
 
+
+        {
+            final int[] altitudes = new int[] { 1 };
+
+            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+
+            assert (maxAltitudeTime == 0);
+        }
+
         {
             final int[] altitudes = new int[] { 0, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 

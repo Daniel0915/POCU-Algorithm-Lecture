@@ -8,6 +8,10 @@ public final class MissionControl {
     }
 
     public static int findMaxAltitudeTime(final int[] altitudes) {
+        if (altitudes.length == 1) {
+            return 0;
+        }
+
         int start = 0;
         int end = altitudes.length - 1;
         int mid;
@@ -36,6 +40,17 @@ public final class MissionControl {
 
     public static ArrayList<Integer> findAltitudeTimes(final int[] altitudes, final int targetAltitude) {
         ArrayList<Integer> result = new ArrayList<>();
+
+        if (altitudes.length == 0) {
+            return result;
+        }
+
+        if (altitudes.length == 1) {
+            result.add(0);
+            return result;
+        }
+
+
         int mid = findMaxAltitudeTime(altitudes);
 
         int increaseStartIndex = 0;
