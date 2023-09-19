@@ -3,7 +3,6 @@ package academy.pocu.comp3500.lab2;
 import academy.pocu.comp3500.lab2.datastructure.Node;
 
 public final class LinkedList {
-//    private int lastNodeIndex = 0;
 
     public static Node append(final Node rootOrNull, final int data) {
         if (rootOrNull == null) {
