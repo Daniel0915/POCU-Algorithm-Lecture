@@ -89,7 +89,7 @@ public final class MissionControl {
             return binarySearch(altitudes, start, mid - 1, targetAltitude);
         }
 
-        return binarySearch(altitudes, mid + 1, end , targetAltitude);
+        return binarySearch(altitudes, mid + 1, end, targetAltitude);
     }
 
     private static int reverseBinarySearch(final int[] altitudes, int start, int end, final int targetAltitude) {
@@ -107,6 +107,6 @@ public final class MissionControl {
             return reverseBinarySearch(altitudes, start, mid - 1, targetAltitude);
         }
 
-        return reverseBinarySearch(altitudes, mid + 1, end , targetAltitude);
+        return reverseBinarySearch(altitudes, mid + 1, end, targetAltitude);
     }
 }
