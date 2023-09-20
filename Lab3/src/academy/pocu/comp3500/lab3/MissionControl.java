@@ -16,7 +16,11 @@ public final class MissionControl {
         int end = altitudes.length - 1;
         int mid;
 
-        while (start < end) {
+        while (start <= end) {
+            if (start == 0 && end == 0) {
+                return 0;
+            }
+
             if (end - start == 1) {
                 return end;
             }
@@ -40,23 +44,50 @@ public final class MissionControl {
 
     public static ArrayList<Integer> findAltitudeTimes(final int[] altitudes, final int targetAltitude) {
         ArrayList<Integer> result = new ArrayList<>();
+        int altitudesLength = altitudes.length;
 
-        if (altitudes.length == 0) {
+
+        if (altitudesLength == 0) {
             return result;
         }
 
-        if (altitudes.length == 1) {
-            result.add(0);
+        int lastIndex = altitudesLength - 1;
+
+        if (altitudesLength == 1) {
+            if (altitudes[0] == targetAltitude) {
+                result.add(0);
+                return result;
+            }
             return result;
         }
-
 
         int mid = findMaxAltitudeTime(altitudes);
+
+        if (mid == lastIndex) {
+            if (targetAltitude == altitudes[lastIndex]) {
+                result.add(lastIndex);
+                return result;
+            }
+        }
+
+        if (mid == 0) {
+            if (targetAltitude == altitudes[0]) {
+                result.add(0);
+                return result;
+            }
+        }
+
+        if (altitudes[mid] == targetAltitude) {
+            result.add(mid);
+            return result;
+        }
 
         int increaseStartIndex = 0;
         int increaseEndIndex = mid - 1;
 
         int left = binarySearch(altitudes, increaseStartIndex, increaseEndIndex, targetAltitude);
+
+
 
         int decreaseStartIndex = mid + 1;
         int decreaseEndIndex = altitudes.length - 1;
@@ -75,6 +106,17 @@ public final class MissionControl {
     }
 
     private static int binarySearch(final int[] altitudes, int start, int end, final int targetAltitude) {
+        if (start == 0 && end == 0) {
+            if (altitudes[0] == targetAltitude) {
+                return 0;
+            }
+
+            if (altitudes[1] == targetAltitude) {
+                return 1;
+            }
+        }
+
+
         if (start > end) {
             return -1;
         }
@@ -93,6 +135,20 @@ public final class MissionControl {
     }
 
     private static int reverseBinarySearch(final int[] altitudes, int start, int end, final int targetAltitude) {
+        int lastIndex = altitudes.length - 1;
+
+        if (start == lastIndex && end == lastIndex) {
+            if (altitudes[lastIndex] == targetAltitude) {
+                return lastIndex;
+            }
+
+            if (altitudes[lastIndex - 1] == targetAltitude) {
+                return lastIndex - 1;
+            }
+        }
+
+
+
         if (start > end) {
             return -1;
         }
