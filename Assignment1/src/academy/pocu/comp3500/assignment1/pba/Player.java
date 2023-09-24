@@ -10,16 +10,16 @@ public final class Player {
     public Player() { }
 
     public Player(final int assistsPerGame,
-                  final int passesPerGame) {
+            final int passesPerGame) {
         this.assistsPerGame = assistsPerGame;
         this.passesPerGame = passesPerGame;
     }
 
     public Player(final String name,
-                  final int pointsPerGame,
-                  final int assistsPerGame,
-                  final int passesPerGame,
-                  final int shootingPercentage) {
+            final int pointsPerGame,
+            final int assistsPerGame,
+            final int passesPerGame,
+            final int shootingPercentage) {
         this.name = name;
         this.pointsPerGame = pointsPerGame;
         this.assistsPerGame = assistsPerGame;
@@ -65,16 +65,5 @@ public final class Player {
 
     public void setShootingPercentage(int shootingPercentage) {
         this.shootingPercentage = shootingPercentage;
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", pointsPerGame=" + pointsPerGame +
-                ", assistsPerGame=" + assistsPerGame +
-                ", passesPerGame=" + passesPerGame +
-                ", shootingPercentage=" + shootingPercentage +
-                '}';
     }
 }
