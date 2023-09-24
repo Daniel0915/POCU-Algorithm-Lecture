@@ -152,7 +152,7 @@ public final class PocuBasketballAssociation {
         for (int i = start; i < players.length; i++) {
             scratch[index] = players[i];
             // 다음 요소를 선택하기 위해 재귀 호출
-            generateCombinations(players, outPlayers, scratch,index + 1, i + 1, teamWorkPoints);
+            generateCombinations(players, outPlayers, scratch, index + 1, i + 1, teamWorkPoints);
         }
     }
 

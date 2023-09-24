@@ -22,6 +22,13 @@ public final class MissionControl {
             }
 
             if (end - start == 1) {
+                if (altitudes[start] > altitudes[end]) {
+                    return start;
+                }
+                return end;
+            }
+
+            if (start == end) {
                 return end;
             }
 
