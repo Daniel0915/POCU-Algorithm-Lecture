@@ -1,21 +1,108 @@
 package academy.pocu.comp3500.lab3.app;
 
+import static academy.pocu.comp3500.lab3.MissionControl.findMaxAltitudeTime;
+
 import academy.pocu.comp3500.lab3.MissionControl;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Program {
 
     public static void main(String[] args) {
         {
-            sejinTest();
+            final int[] altitudes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 10 };
+
+            assert (findMaxAltitudeTime(altitudes) == 8);
+        }
+
+        {
+            final int[] altitudes = new int[] { 10, 9, 7, 6, 4, 3, 2, 1, 0};
+
+            assert (findMaxAltitudeTime(altitudes) == 0);
+        }
+
+
+        {
+            final int[] altitudes = new int[] { 7, 6, 5, 4, 3, 2, 1 };
+
+
+            ArrayList<Integer> bounds = MissionControl.findAltitudeTimes(altitudes, 8);
+
+
+            assert (bounds.size() == 0);
+        }
+
+
+        {
+            final int[] altitudes = new int[] { 1, 2, 3, 4, 5, 3, 2, 1 };
+
+
+            ArrayList<Integer> bounds = MissionControl.findAltitudeTimes(altitudes, 7);
+
+
+            assert (bounds.size() == 0);
         }
 
 
 
+
+//        {
+//            for (int k = 0; k < 100; ++k) {
+//                int[] altitude = new int[100];
+//                for (int i = 0; i < k; ++i) {
+//                    altitude[i] = i + 1;
+//                }
+//                for (int i = 0; i < 100 - k; ++i) {
+//                    altitude[k + i] = k - i - 1;
+//                }
+//                for (int i = 0; i < altitude.length; ++i) {
+//                    ArrayList<Integer> range = MissionControl.findAltitudeTimes(altitude, altitude[i]);
+//                    ArrayList<Integer> expected = new ArrayList<>();
+//                    Collections.sort(range);
+//                    for (int j = 0; j < altitude.length; ++j) {
+//                        if (altitude[j] == altitude[i]) {
+//                            expected.add(j);
+//                        }
+//                    }
+//                    Collections.sort(expected);
+//                    assert (expected.size() <= 2);
+//                    assert (expected.size() == range.size());
+//                    for (int j = 0; j < range.size(); ++j) {
+//                        assert (range.get(j) == expected.get(j));
+//                    }
+//                }
+//            }
+//        }
+
+//        {
+//            for (int k = 0; k < 100; ++k) {
+//                int[] altitude = new int[100];
+//                for (int i = 0; i < k; ++i) {
+//                    altitude[i] = i + 1;
+//                }
+//                for (int i = 0; i < 100 - k; ++i) {
+//                    altitude[k + i] = k - i - 1;
+//                }
+//                int index = MissionControl.findMaxAltitudeTime(altitude);
+//                int maxIndex = 0;
+//                for (int i = 0; i < altitude.length; ++i) {
+//                    if (altitude[i] > altitude[maxIndex]) {
+//                        maxIndex = i;
+//                    }
+//                }
+//                assert (index == maxIndex);
+//            }
+//        }
+
+
+        {
+            sejinTest();
+        }
+
         {
             final int[] altitudes = new int[] { 1, 2, 3, 4, 5, 6, 7, 4, 3, 2 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
 
             assert (maxAltitudeTime == 6);
         }
@@ -24,7 +111,7 @@ public class Program {
         {
             final int[] altitudes = new int[] { 1 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
 
             assert (maxAltitudeTime == 0);
         }
@@ -32,7 +119,7 @@ public class Program {
         {
             final int[] altitudes = new int[] { 0, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
 
             assert (maxAltitudeTime == 1);
         }
@@ -40,7 +127,7 @@ public class Program {
         {
             final int[] altitudes = new int[] { 0, 1, 2, 3, 4, 3, 2, 1, 0 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
 
             assert (maxAltitudeTime == 4);
         }
@@ -70,20 +157,20 @@ public class Program {
     public static void sejinTest() {
         {
             final int[] altitudes = new int[] { 1, 2, 3, 4, 5, 6, 7, 4, 3, 2 };
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
             assert (maxAltitudeTime == 6);
         }
 
         {
             final int[] altitudes = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
             assert (maxAltitudeTime == 9);
         }
 
         {
             final int[] altitudes = new int[] {10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
 
             assert (maxAltitudeTime == 0);
         }
@@ -91,21 +178,21 @@ public class Program {
         {
             final int[] altitudes = new int[] {4, 5, 4, 3, 2 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
             assert (maxAltitudeTime == 1);
         }
 
         {
             final int[] altitudes = new int[] {1, 2, 3, 4, 3, 0 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
             assert (maxAltitudeTime == 3);
         }
 
         {
             final int[] altitudes = new int[] { 1 };
 
-            final int maxAltitudeTime = MissionControl.findMaxAltitudeTime(altitudes);
+            final int maxAltitudeTime = findMaxAltitudeTime(altitudes);
             assert (maxAltitudeTime == 0);
         }
 
