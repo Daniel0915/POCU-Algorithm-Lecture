@@ -16,7 +16,5 @@ public class Program {
 
             assert (findMaxAltitudeTime(altitudes) == 0);
         }
-
-
     }
 }
