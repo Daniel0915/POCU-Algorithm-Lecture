@@ -75,7 +75,10 @@ public final class Cracker {
             byte[] digest = md.digest();
 
             String passwordString = Base64.getEncoder().encodeToString(digest);
-            if (Objects.equals(passwordString, myPasswordHash)) { return true; }
+
+            if (Objects.equals(passwordString, myPasswordHash)) {
+                return true;
+            }
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
