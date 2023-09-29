@@ -21,7 +21,7 @@ public final class Cracker {
 
     public String getMyPasswordHash() {
         for (User user : userTable) {
-            if (Objects.equals(user.getEmail(), "notahacker@not.a.hacker")) {
+            if (Objects.equals(user.getEmail(), email)) {
                 return user.getPasswordHash();
             }
         }
