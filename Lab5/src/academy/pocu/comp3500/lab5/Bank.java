@@ -63,7 +63,7 @@ public class Bank {
         byte[] decryptPlainByte = decrypt(signature, publicKey);
 
         if (decryptPlainByte != null) {
-            if(Objects.equals(encodeToHexString(sha256Hash), encodeToHexString(decryptPlainByte))) {
+            if (Objects.equals(encodeToHexString(sha256Hash), encodeToHexString(decryptPlainByte))) {
                 for (int i = 0; i < pubKeys.length; i++) {
                     if (pubKeys[i] == from) {
                         amounts[i] -= amount;
