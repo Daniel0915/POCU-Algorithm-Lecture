@@ -5,23 +5,24 @@ import java.math.BigInteger;
 public class KeyGenerator {
 
     public static boolean isPrime(final BigInteger number) {
-        if (number.equals(BigInteger.ONE)) {
+        if (number.compareTo(BigInteger.ONE) <= 0) {
             return false;
         }
 
-        BigInteger[] minPrimeNums = {BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(5), BigInteger.valueOf(7)};
-
-        for (BigInteger minPrimeNum : minPrimeNums) {
-            if (minPrimeNum == number) {
-                return true;
-            }
-
-            BigInteger remainder = number.mod(minPrimeNum);
-            if (remainder.equals(BigInteger.ZERO)) {
-                return false; // 나누어 떨어지면 소수가 아님
-            }
+        if (number.compareTo(BigInteger.TWO) == 0) {
+            return true;
         }
 
-        return true; // 나누어 떨어지지 않으면 소수일 가능성이 있음
+        if (number.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            return false;
+        }
+
+        BigInteger sqrt = number.sqrt();
+        for (BigInteger i = new BigInteger("3"); i.compareTo(sqrt) <= 0; i = i.add(BigInteger.TWO)) {
+            if (number.mod(i).equals(BigInteger.ZERO)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

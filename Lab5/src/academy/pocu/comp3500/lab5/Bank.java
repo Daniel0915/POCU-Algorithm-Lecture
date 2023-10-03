@@ -36,6 +36,26 @@ public class Bank {
     }
 
     public boolean transfer(final byte[] from, byte[] to, final long amount, final byte[] signature) {
+        if (!isWallet(from)) {
+            return false;
+        }
+
+        if (!isWallet(to)) {
+            return false;
+        }
+
+        if (amount > getBalance(from)) {
+            return false;
+        }
+
+        if (amount == 0) {
+            return false;
+        }
+
+        if (amount > Long.MAX_VALUE) {
+            return false;
+        }
+
         PublicKey publicKey = getPublicKey(from);
 
         byte[] sha256Hash = getSha256Hash(from, to, amount);
@@ -162,5 +182,15 @@ public class Bank {
             result.append(String.format("%02x", oneByte));
         }
         return result.toString();
+    }
+
+    private boolean isWallet(byte[] publicKeyByte) {
+        for (int i = 0; i < pubKeys.length; i++) {
+            // 2. 만약 있다면, 잔액을 반환
+            if (pubKeys[i] == publicKeyByte) {
+                return true;
+            }
+        }
+        return false;
     }
 }

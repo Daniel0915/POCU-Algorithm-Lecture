@@ -8,6 +8,8 @@ import java.math.BigInteger;
 public class Program {
 
     public static void main(String[] args) {
+        smallPrimeNumberTest();
+
         // KeyGenerator
         assert (!KeyGenerator.isPrime(BigInteger.ZERO));
         assert (!KeyGenerator.isPrime(BigInteger.ONE));
@@ -91,5 +93,31 @@ public class Program {
             result.append(String.format("%02x", oneByte));
         }
         return result.toString();
+    }
+
+    private static void smallPrimeNumberTest() {
+        final int LIMIT = 1000000;
+        boolean[] era = new boolean[LIMIT];
+
+        // true => not prime number. Because the default value is false.
+        era[0] = true;
+        era[1] = true;
+        for (int i = 2; i < LIMIT; ++i) {
+            if (era[i] == false) {
+                for (int notPrime = i + i; notPrime < LIMIT; notPrime += i) {
+                    era[notPrime] = true;
+                }
+            }
+        }
+
+        for (int i = 0; i < LIMIT; ++i) {
+            boolean bPrime = !era[i];
+            boolean bIsPrimeResult = KeyGenerator.isPrime(BigInteger.valueOf(i));
+
+            if (bPrime != bIsPrimeResult) {
+                System.out.println(String.format("%d is %s\n", i, (bPrime ? "prime number" : "not a prime number")));
+            }
+            assert(bPrime == bIsPrimeResult);
+        }
     }
 }
