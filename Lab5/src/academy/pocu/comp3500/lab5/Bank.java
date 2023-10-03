@@ -1,7 +1,5 @@
 package academy.pocu.comp3500.lab5;
 
-import static academy.pocu.comp3500.lab5.app.Program.encodeToHexString;
-
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -156,5 +154,13 @@ public class Bank {
         } catch (SignatureException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static String encodeToHexString(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte oneByte : bytes) {
+            result.append(String.format("%02x", oneByte));
+        }
+        return result.toString();
     }
 }

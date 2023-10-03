@@ -75,7 +75,7 @@ public class Program {
         assert (receiverBalance == receiverInitialBalance + AMOUNT);
     }
 
-    public static byte[] decodeFromHexString(String hexString) {
+    private static byte[] decodeFromHexString(String hexString) {
         byte[] bytes = new byte[hexString.length() / 2];
         for (int i = 0; i < hexString.length(); i += 2) {
             int firstDigit = Character.digit(hexString.charAt(i), 16);
@@ -85,7 +85,7 @@ public class Program {
         return bytes;
     }
 
-    public static String encodeToHexString(byte[] bytes) {
+    private static String encodeToHexString(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte oneByte : bytes) {
             result.append(String.format("%02x", oneByte));
