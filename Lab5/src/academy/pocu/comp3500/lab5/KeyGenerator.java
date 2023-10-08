@@ -10,7 +10,7 @@ public class KeyGenerator {
             return false;
         }
 
-        if (number.compareTo(BigInteger.TWO) == 0) {
+        if (number.compareTo(new BigInteger("3")) <= 0) {
             return true;
         }
 
@@ -18,138 +18,67 @@ public class KeyGenerator {
             return false;
         }
 
-        // 작은 수에 대한 판별(링크 : https://ko.wikipedia.org/wiki/%EB%B0%80%EB%9F%AC-%EB%9D%BC%EB%B9%88_%EC%86%8C%EC%88%98%ED%8C%90%EB%B3%84%EB%B2%95)
+        BigInteger[] smallPrimes = new BigInteger[0];
+
         if (number.compareTo(new BigInteger("1373653")) == -1) {
-            if (number.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
-                return false;
-            }
+            smallPrimes = new BigInteger[]{new BigInteger("2"), new BigInteger("3")};
+        } else if (number.compareTo(new BigInteger("9080191")) == -1) {
+            smallPrimes = new BigInteger[]{new BigInteger("31"), new BigInteger("73")};
+        } else if (number.compareTo(new BigInteger("4759123141")) == -1) {
+            smallPrimes = new BigInteger[]{new BigInteger("2"), new BigInteger("7"), new BigInteger("61")};
+        } else if (number.compareTo(new BigInteger("2152302898747")) == -1) {
+            smallPrimes = new BigInteger[]{new BigInteger("2"), new BigInteger("3"), new BigInteger("5"), new BigInteger("7"), new BigInteger("11")};
+        } else if (number.compareTo(new BigInteger("3474749660383")) == -1) {
+            smallPrimes = new BigInteger[]{new BigInteger("2"), new BigInteger("3"), new BigInteger("5"), new BigInteger("7"), new BigInteger("11"), new BigInteger("13")};
+        } else if (number.compareTo(new BigInteger("341550071728321")) == -1) {
+            smallPrimes = new BigInteger[]{new BigInteger("2"), new BigInteger("3"), new BigInteger("5"), new BigInteger("7"), new BigInteger("11"), new BigInteger("13"), new BigInteger("17")};
+        } else {
+            BigInteger sqrt = number.sqrt();
 
-            if (number.mod(new BigInteger("3")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-            return true;
-        }
-
-        if (number.compareTo(new BigInteger("9080191")) == -1) {
-            if (number.mod(new BigInteger("31")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("73")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-            return true;
-        }
-
-        if (number.compareTo(new BigInteger("4759123141")) == -1) {
-            if (number.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("7")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("61")).equals(BigInteger.ZERO)) {
-                return false;
+            for (BigInteger i = new BigInteger("3"); i.compareTo(sqrt) <= 0; i = i.add(BigInteger.TWO)) {
+                if (number.mod(i).equals(BigInteger.ZERO)) {
+                    return false;
+                }
             }
             return true;
         }
 
-        if (number.compareTo(new BigInteger("2152302898747")) == -1) {
-            if (number.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("3")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("5")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("7")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("11")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-            return true;
-        }
-
-        if (number.compareTo(new BigInteger("3474749660383")) == -1) {
-            if (number.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("3")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("5")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("7")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("11")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("13")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        // 341,550,071,728,321
-
-        if (number.compareTo(new BigInteger("341550071728321")) == -1) {
-            if (number.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("3")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("5")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("7")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("11")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("13")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            if (number.mod(new BigInteger("17")).equals(BigInteger.ZERO)) {
-                return false;
-            }
-
-            return true;
-        }
-
-
-
-        BigInteger sqrt = number.sqrt();
-
-        for (BigInteger i = new BigInteger("3"); i.compareTo(sqrt) <= 0; i = i.add(BigInteger.TWO)) {
-            if (number.mod(i).equals(BigInteger.ZERO)) {
-                return false;
+        for (BigInteger a : smallPrimes) {
+            if (!millerRabinTest(number, a)) {
+                return false; // 소수가 아님
             }
         }
+
         return true;
     }
+
+    // 밀러-라빈 테스트 수행
+    // 밀러-라빈 테스트 수행
+    public static boolean millerRabinTest(BigInteger number, BigInteger a) {
+        BigInteger numberMinusOne = number.subtract(BigInteger.ONE);
+        BigInteger d = numberMinusOne;
+        while (d.mod(new BigInteger("2")).equals(BigInteger.ZERO)) {
+            d = d.divide(new BigInteger("2"));
+        }
+
+        BigInteger x = a.modPow(d, number);
+        if (x.equals(BigInteger.ONE) || x.equals(numberMinusOne)) {
+            return true; // 테스트 통과
+        }
+
+        while (!d.equals(numberMinusOne)) {
+            x = x.modPow(new BigInteger("2"), number);
+            d = d.multiply(new BigInteger("2"));
+
+            if (x.equals(BigInteger.ONE)) {
+                return false; // 소수가 아님
+            }
+            if (x.equals(numberMinusOne)) {
+                return true; // 테스트 통과
+            }
+        }
+
+        return false; // 소수가 아님
+    }
+
 }
