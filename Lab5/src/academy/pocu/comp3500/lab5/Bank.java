@@ -80,7 +80,7 @@ public class Bank {
         return false;
     }
 
-    private static byte[] getSha256Hash(final byte[] from, byte[] to, final long amount) {
+    public static byte[] getSha256Hash(final byte[] from, byte[] to, final long amount) {
         ByteBuffer buffer = ByteBuffer.allocate(from.length + to.length + 8);
         buffer.put(from);
         buffer.put(to);
@@ -104,10 +104,10 @@ public class Bank {
         return digest;
     }
 
-    private static byte[] encrypt(final byte[] sha256Hash, PrivateKey privateKey) {
+    public static byte[] encrypt(final byte[] sha256Hash, final byte[] privateKeyByte) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKeyByte));
 
             byte[] ciphertext = cipher.doFinal(sha256Hash);
 
