@@ -1,159 +1,292 @@
 package academy.pocu.comp3500.lab6;
 
 import academy.pocu.comp3500.lab6.leagueofpocu.Player;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class League {
-    private Player[] players;
+    private TreeNode players;
+    private TreeNode sucNode;
+    private TreeNode preNode;
+    private List<TreeNode> arrayTreeNode;
+
+    public League() {}
 
     public League(Player[] players) {
-        this.players = players;
-    }
-
-    public Player findMatchOrNull(final Player player) {
-        quickSort(this.players, "rating");
-        int minDiff = Integer.MAX_VALUE;
-        int targetIndex = 0;
-
-        for (int i = 0; i < players.length; i++) {
-            int diff = Math.abs(players[i].getRating() - player.getRating());
-
-            if (diff == 0) {
-                continue;
-            }
-
-            if (diff == minDiff) {
-                targetIndex = i;
-                break;
-            }
-
-            if (diff < minDiff) {
-                minDiff = diff;
-                targetIndex = i;
-            }
+        TreeNode playersNode = new TreeNode(players[0]);
+        for (int i = 1; i < players.length; i++) {
+            insertRecursive(playersNode, players[i]);
         }
-        return players[targetIndex];
+        this.players = playersNode;
+        this.arrayTreeNode = new ArrayList<>();
     }
 
-    public Player[] getTop(final int count) {
-        quickSort(this.players, "rating");
-        Player[] topPlayers = new Player[count];
-        int j = 0;
-        for (int i = players.length - 1; i >= count - 1; i--) {
-            topPlayers[j] = players[i];
-            j++;
-        }
-        return topPlayers;
-    }
-
-    public Player[] getBottom(final int count) {
-        quickSort(this.players, "rating");
-        Player[] topPlayers = new Player[count];
-        for (int i = 0; i < count; i++) {
-            topPlayers[i] = players[i];
-        }
-        return topPlayers;
-    }
-
-    public boolean join(final Player player) {
-        quickSort(this.players, "id");
-
-        if (findPlayer(this.players, player.getId()) != null) {
-
-        }
-
-        return findPlayer(this.players, player.getId()) != null ? true : false;
-    }
-
-    public boolean leave(final Player player) {
-        return false;
-    }
-
-    public Player[] getPlayers() {
+    public TreeNode getPlayers() {
         return players;
     }
 
-    private static void quickSort(Player[] players, String type) {
-        quickSortRecursive(players, 0, players.length - 1, type);
+    public TreeNode getSucNode() {
+        return sucNode;
     }
 
-    private static void quickSortRecursive(Player[] players, int left, int right, String type) {
-        if (left >= right) {
+    public TreeNode getPreNode() {
+        return preNode;
+    }
+
+    public Player findMatchOrNull(final Player player) {
+        // 1명만 선수가 등록되면 매칭 성사불가로 null
+        if (players.getLeft() == null && players.getRight() == null) {
+            return null;
+        }
+
+        findPreSuc(this.players, getTreeNodeOrNull(this.players, player));
+
+        if (this.preNode == null && this.sucNode != null) {
+            return this.sucNode.getPlayer();
+        }
+
+        if (this.preNode != null && this.sucNode == null) {
+            return this.preNode.getPlayer();
+        }
+
+        int preDiff = Math.abs(this.preNode.getPlayer().getRating() - player.getRating());
+        int sucDiff = Math.abs(this.sucNode.getPlayer().getRating() - player.getRating());
+
+        if (preDiff >= sucDiff) {
+            return this.sucNode.getPlayer();
+        }
+
+        return this.preNode.getPlayer();
+    }
+
+    public Player[] getTop(final int count) {
+        Player[] result = new Player[0];
+        if (this.players != null) {
+            result = new Player[count];
+            getTopRecursive(this.players, result, 0, count);
+        }
+        return result;
+    }
+
+    public Player[] getBottom(final int count) {
+        Player[] result = new Player[count];
+        getBottomRecursive(this.players, result, 0, count);
+        return result;
+    }
+
+    public boolean join(final Player player) {
+        if (getTreeNodeOrNull(this.players, player) != null) {
+            return false;
+        }
+        insertRecursive(this.players, player);
+        return true;
+    }
+
+    public boolean leave(final Player player) {
+        TreeNode findTreeNode = getTreeNodeOrNull(this.players, player);
+        if (findTreeNode != null) {
+            findPreSuc(this.players, findTreeNode);
+            if (this.preNode == null && this.sucNode != null) {
+                findTreeNode.setPlayer(this.sucNode.getPlayer());
+                this.sucNode = null;
+                return true;
+            }
+
+            if (this.preNode != null && this.sucNode == null) {
+                findTreeNode.setPlayer(this.preNode.getPlayer());
+                this.preNode = null;
+            }
+
+            // preNode, sucNode 모두 있을 경우
+            findTreeNode.setPlayer(this.sucNode.getPlayer());
+            this.sucNode = null;
+
+            return true;
+        }
+        return false;
+    }
+
+    public static TreeNode insertRecursive(final TreeNode treeNode, Player player) {
+        if (treeNode == null) {
+            return new TreeNode(player);
+        }
+
+        if (player.getRating() < treeNode.getPlayer().getRating()) {
+            treeNode.setLeft(insertRecursive(treeNode.getLeft(), player));
+        } else {
+            treeNode.setRight(insertRecursive(treeNode.getRight(), player));
+        }
+
+        return treeNode;
+    }
+
+    public TreeNode getTreeNodeOrNull(final TreeNode treeNode, Player player) {
+        if (treeNode == null) {
+            return null;
+        }
+
+        if (treeNode.getPlayer().getRating() == player.getRating()) {
+            return treeNode;
+        }
+
+        if (player.getRating() < treeNode.getPlayer().getRating()) {
+            return getTreeNodeOrNull(treeNode.getLeft(), player);
+        }
+
+        return getTreeNodeOrNull(treeNode.getRight(), player);
+    }
+
+    private TreeNode getNearTreeNodeOrNull(final TreeNode treeNode, Player player, final TreeNode parent) {
+        if (treeNode == null) {
+            return null;
+        }
+
+        if (treeNode.getPlayer().getRating() == player.getRating()) {
+            if (treeNode.getLeft() == null && treeNode.getRight() == null && parent != null) {
+                return parent;
+            }
+
+            if (treeNode.getLeft() == null && treeNode.getRight() != null) {
+                return treeNode.getRight();
+            }
+
+            if (treeNode.getLeft() != null && treeNode.getRight() == null) {
+                return treeNode.getLeft();
+            }
+
+            int leftDiff = Math.abs(treeNode.getPlayer().getRating() - treeNode.getLeft().getPlayer().getRating());
+            int rightDiff = Math.abs(treeNode.getPlayer().getRating() - treeNode.getRight().getPlayer().getRating());
+
+            if (leftDiff >= rightDiff) {
+                return treeNode.getRight();
+            }
+
+            return treeNode.getLeft();
+        }
+
+        if (player.getRating() < treeNode.getPlayer().getRating()) {
+            return getNearTreeNodeOrNull(treeNode.getLeft(), player, treeNode);
+        }
+
+        return getNearTreeNodeOrNull(treeNode.getRight(), player, treeNode);
+    }
+
+    private int getTopRecursive(TreeNode current, Player[] result, int index, int size) {
+        if (current == null || index == size) {
+            return index;
+        }
+
+        index = getTopRecursive(current.getRight(), result, index, size);
+
+        if (index < size) {
+            result[index] = current.getPlayer();
+            index++;
+        }
+
+        return getTopRecursive(current.getLeft(), result, index, size);
+    }
+
+    private int getBottomRecursive(TreeNode current, Player[] result, int index, int size) {
+        if (current == null || index == size) {
+            return index;
+        }
+
+        index = getBottomRecursive(current.getLeft(), result, index, size);
+
+        if (index < size) {
+            result[index] = current.getPlayer();
+            index++;
+        }
+
+        return getBottomRecursive(current.getRight(), result, index, size);
+    }
+
+    private void traverseInOrderSuccessor(TreeNode treeNode, TreeNode targetNode, boolean isTargetNextNode) {
+        if (treeNode == null) {
             return;
         }
 
-        int pivotPos;
+        traverseInOrderSuccessor(treeNode.getLeft(), targetNode, isTargetNextNode);
 
-        if (Objects.equals(type, "rating")) {
-            pivotPos = partition(players, left, right);
+        if (isTargetNextNode == true) {
+            this.sucNode = treeNode;
+            return;
+        }
+
+        if (treeNode == targetNode) {
+            isTargetNextNode = true;
+        }
+
+        traverseInOrderSuccessor(treeNode.getRight(), targetNode, isTargetNextNode);
+    }
+
+    public void traverseInOrderPredecessor(TreeNode treeNode, TreeNode targetNode) {
+        if (treeNode == null) {
+            return;
+        }
+
+        traverseInOrderPredecessor(treeNode.getLeft(), targetNode);
+
+        if (treeNode.getPlayer().getRating() == targetNode.getPlayer().getRating()) {
+            return; // 대상 노드를 찾았으므로 더 이상 진행하지 않음
+        }
+
+        this.preNode = treeNode; // 이전 노드 업데이트
+
+        traverseInOrderPredecessor(treeNode.getRight(), targetNode);
+    }
+
+    private void traverseInOrder(TreeNode treeNode) {
+        if (treeNode == null) {
+            return;
+        }
+
+        traverseInOrder(treeNode.getLeft());
+        arrayTreeNode.add(treeNode);
+        traverseInOrder(treeNode.getRight());
+    }
+
+    public void findPreSuc(TreeNode treeNode, TreeNode targetNode) {
+        // Base case
+        if (treeNode == null) {
+            return;
+        }
+
+        // If key is present at root
+        if (treeNode.getPlayer().getRating() == targetNode.getPlayer().getRating()) {
+            // The maximum value in left
+            // subtree is predecessor
+
+            if (treeNode.getLeft() != null) {
+                TreeNode tmp = treeNode.getLeft();
+                while (tmp.getRight() != null)
+                    tmp = tmp.getRight();
+
+                preNode = tmp;
+            }
+
+            // The minimum value in
+            // right subtree is successor
+            if (treeNode.getRight() != null) {
+                TreeNode tmp = treeNode.getRight();
+
+                while (tmp.getLeft() != null)
+                    tmp = tmp.getLeft();
+
+                sucNode = tmp;
+            }
+            return;
+        }
+
+        // If key is smaller than
+        // root's key, go to left subtree
+        if (treeNode.getPlayer().getRating() > targetNode.getPlayer().getRating()) {
+            sucNode = treeNode;
+            findPreSuc(treeNode.getLeft(), targetNode);
+            // Go to right subtree
         } else {
-            pivotPos = partitionID(players, left, right);
+            preNode = treeNode;
+            findPreSuc(treeNode.getRight(), targetNode);
         }
-        quickSortRecursive(players, left, pivotPos -1, type);
-        quickSortRecursive(players, pivotPos + 1, right, type);
     }
-
-    private static int partition(Player[] players, int left, int right) {
-        Player pivot = players[right];
-        int i = (left - 1);
-
-        for (int j = left; j < right; j++) {
-            if (players[j].getRating() < pivot.getRating()) {
-                i++;
-                swap(players, i, j);
-            }
-        }
-
-        int pivotPos = i + 1;
-
-        swap(players, pivotPos, right);
-
-        return pivotPos;
-    }
-
-    private static void swap(Player[] players, int pos1, int pos2) {
-        Player temp = players[pos1];
-        players[pos1] = players[pos2];
-        players[pos2] = temp;
-    }
-
-    private static int partitionID(Player[] players, int left, int right) {
-        Player pivot = players[right];
-        int i = (left - 1);
-
-        for (int j = left; j < right; j++) {
-            if (players[j].getId() < pivot.getId()) {
-                i++;
-                swap(players, i, j);
-            }
-        }
-
-        int pivotPos = i + 1;
-
-        swap(players, pivotPos, right);
-
-        return pivotPos;
-    }
-
-    public static Player binarySearchPlayer(Player[] arr, int targetId, int left, int right) {
-        if (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            if (arr[mid].getId() == targetId) {
-                return arr[mid]; // 플레이어를 찾았을 때 반환
-            } else if (arr[mid].getId() < targetId) {
-                return binarySearchPlayer(arr, targetId, mid + 1, right); // 오른쪽 반열로 재귀 호출
-            } else {
-                return binarySearchPlayer(arr, targetId, left, mid - 1); // 왼쪽 반열로 재귀 호출
-            }
-        }
-
-        return null; // 플레이어를 찾지 못한 경우 null 반환
-    }
-
-    public static Player findPlayer(Player[] arr, int targetId) {
-        return binarySearchPlayer(arr, targetId, 0, arr.length - 1);
-    }
-
-
 }
