@@ -9,11 +9,16 @@ public class League {
     private TreeNode sucNode;
     private TreeNode preNode;
     private List<TreeNode> arrayTreeNode;
+    private int playersCnt;
 
-    public League() {}
+    public League() {
+
+    }
+
 
     public League(Player[] players) {
         TreeNode playersNode = new TreeNode(players[0]);
+        this.playersCnt = players.length;
         for (int i = 1; i < players.length; i++) {
             insertRecursive(playersNode, players[i]);
         }
@@ -33,7 +38,16 @@ public class League {
         return preNode;
     }
 
+    public int getPlayersCnt() {
+        return playersCnt;
+    }
+
     public Player findMatchOrNull(final Player player) {
+        // 리그 참여 중인 선수가 없을 경우
+        if (this.playersCnt == 0) {
+            return null;
+        }
+
         // 1명만 선수가 등록되면 매칭 성사불가로 null
         if (players.getLeft() == null && players.getRight() == null) {
             return null;
@@ -79,6 +93,7 @@ public class League {
             return false;
         }
         insertRecursive(this.players, player);
+        this.playersCnt++;
         return true;
     }
 
@@ -89,6 +104,8 @@ public class League {
             if (this.preNode == null && this.sucNode != null) {
                 findTreeNode.setPlayer(this.sucNode.getPlayer());
                 this.sucNode = null;
+
+                this.playersCnt--;
                 return true;
             }
 
@@ -101,6 +118,7 @@ public class League {
             findTreeNode.setPlayer(this.sucNode.getPlayer());
             this.sucNode = null;
 
+            this.playersCnt--;
             return true;
         }
         return false;
