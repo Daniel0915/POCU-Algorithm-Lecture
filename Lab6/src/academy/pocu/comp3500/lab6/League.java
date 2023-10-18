@@ -10,6 +10,14 @@ public class League {
     private TreeNode preNode;
     private List<TreeNode> arrayTreeNode;
     private int playersCnt;
+    private int minDiff = Integer.MAX_VALUE;
+    private int minDiffPre = Integer.MAX_VALUE;
+    private int minDiffSuc = Integer.MAX_VALUE;
+    private int diff;
+    private int diffPre;
+    private int diffSuc;
+
+    private TreeNode matchNode;
 
     public League() {
 
@@ -42,9 +50,19 @@ public class League {
         return playersCnt;
     }
 
+    public TreeNode getMatchNode() {
+        return matchNode;
+    }
+
     public Player findMatchOrNull(final Player player) {
         // 리그 참여 중인 선수가 없을 경우
         if (this.playersCnt == 0) {
+            return null;
+        }
+
+        TreeNode playerTreeNode = getTreeNodeOrNull(this.players, player);
+
+        if (playerTreeNode == null) {
             return null;
         }
 
@@ -53,24 +71,9 @@ public class League {
             return null;
         }
 
-        findPreSuc(this.players, getTreeNodeOrNull(this.players, player));
+        traverseInOrderMatchNode(this.players, playerTreeNode, false);
 
-        if (this.preNode == null && this.sucNode != null) {
-            return this.sucNode.getPlayer();
-        }
-
-        if (this.preNode != null && this.sucNode == null) {
-            return this.preNode.getPlayer();
-        }
-
-        int preDiff = Math.abs(this.preNode.getPlayer().getRating() - player.getRating());
-        int sucDiff = Math.abs(this.sucNode.getPlayer().getRating() - player.getRating());
-
-        if (preDiff >= sucDiff) {
-            return this.sucNode.getPlayer();
-        }
-
-        return this.preNode.getPlayer();
+        return this.matchNode.getPlayer();
     }
 
     public Player[] getTop(final int count) {
@@ -219,39 +222,62 @@ public class League {
         return getBottomRecursive(current.getRight(), result, index, size);
     }
 
-    private void traverseInOrderSuccessor(TreeNode treeNode, TreeNode targetNode, boolean isTargetNextNode) {
+    private void traverseInOrderMatchNode(TreeNode treeNode, TreeNode targetNode, boolean isMathNode) {
+        if (isMathNode) {
+            return;
+        }
+
         if (treeNode == null) {
             return;
         }
 
-        traverseInOrderSuccessor(treeNode.getLeft(), targetNode, isTargetNextNode);
+        traverseInOrderMatchNode(treeNode.getLeft(), targetNode, isMathNode); // left
 
-        if (isTargetNextNode == true) {
-            this.sucNode = treeNode;
-            return;
+        if (targetNode.getPlayer().getRating() != treeNode.getPlayer().getRating()) {
+            this.diff = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());
+
+            if (this.diff <= this.minDiff) {
+                this.minDiff = this.diff;
+                this.matchNode = treeNode;
+                isMathNode = true;
+            }
         }
-
-        if (treeNode == targetNode) {
-            isTargetNextNode = true;
-        }
-
-        traverseInOrderSuccessor(treeNode.getRight(), targetNode, isTargetNextNode);
+        traverseInOrderMatchNode(treeNode.getRight(), targetNode, isMathNode); // right
     }
 
-    public void traverseInOrderPredecessor(TreeNode treeNode, TreeNode targetNode) {
+    public void traverseInOrderPreSuc(TreeNode treeNode, TreeNode targetNode, boolean isPreSuc) {
+        if (isPreSuc) {
+            return;
+        }
+
         if (treeNode == null) {
             return;
         }
 
-        traverseInOrderPredecessor(treeNode.getLeft(), targetNode);
+        traverseInOrderPreSuc(treeNode.getLeft(), targetNode, isPreSuc);
 
-        if (treeNode.getPlayer().getRating() == targetNode.getPlayer().getRating()) {
-            return; // 대상 노드를 찾았으므로 더 이상 진행하지 않음
+        if (targetNode.getPlayer().getRating() != treeNode.getPlayer().getRating()) {
+            if (treeNode.getPlayer().getRating() < targetNode.getPlayer().getRating()) {
+                this.diffPre = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());
+
+                if (this.diffPre <= this.minDiffPre) {
+                    this.minDiffPre = this.diffPre;
+                    this.preNode = treeNode;
+                }
+            }
+
+            if (treeNode.getPlayer().getRating() > targetNode.getPlayer().getRating()) {
+                this.diffSuc = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());
+
+                if (this.diffSuc <= this.minDiffSuc) {
+                    this.minDiffSuc = this.diffSuc;
+                    this.sucNode = treeNode;
+                    isPreSuc = true;
+                }
+            }
         }
 
-        this.preNode = treeNode; // 이전 노드 업데이트
-
-        traverseInOrderPredecessor(treeNode.getRight(), targetNode);
+        traverseInOrderPreSuc(treeNode.getRight(), targetNode, isPreSuc);
     }
 
     private void traverseInOrder(TreeNode treeNode) {
@@ -260,7 +286,10 @@ public class League {
         }
 
         traverseInOrder(treeNode.getLeft());
-        arrayTreeNode.add(treeNode);
+
+
+
+
         traverseInOrder(treeNode.getRight());
     }
 
