@@ -81,16 +81,39 @@ public class League {
 
     public Player[] getTop(final int count) {
         Player[] result = new Player[0];
+
+        int size = count;
+
+        // 필요한 상위 선수(count)가 존재하는 선수보다 많을 경우
+        int diff = count - playersCnt;
+        if (diff > 0) {
+            size = count - diff;
+        }
+
         if (this.players != null) {
-            result = new Player[count];
+            result = new Player[size];
             getTopRecursive(this.players, result, 0, count);
         }
+
         return result;
     }
 
     public Player[] getBottom(final int count) {
-        Player[] result = new Player[count];
-        getBottomRecursive(this.players, result, 0, count);
+        Player[] result = new Player[0];
+
+        int size = count;
+
+        // 필요한 하위 선수(count)가 존재하는 선수보다 많을 경우
+        int diff = count - playersCnt;
+        if (diff > 0) {
+            size = count - diff;
+        }
+
+        if (this.players != null) {
+            result = new Player[size];
+            getBottomRecursive(this.players, result, 0, count);
+        }
+
         return result;
     }
 

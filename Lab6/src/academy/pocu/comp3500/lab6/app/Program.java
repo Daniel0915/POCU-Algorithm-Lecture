@@ -6,8 +6,36 @@ import academy.pocu.comp3500.lab6.leagueofpocu.Player;
 public class Program {
 
     public static void main(String[] args) {
-        pocu();
-        G02_test();
+        League emptyLeague = new League();
+
+        Player[] emptyLeaguePlayers = emptyLeague.getBottom(10);
+
+        System.out.println(emptyLeaguePlayers.length);
+
+        assert (emptyLeaguePlayers.length == 0);
+
+//        Player player1 = new Player(1, "player1", 4);
+//        Player player2 = new Player(2, "player2", 6);
+//        Player player3 = new Player(3, "player3", 7);
+//        Player player4 = new Player(4, "player4", 9);
+//        Player player5 = new Player(5, "player5", 11);
+//        Player player6 = new Player(6, "player6", 12);
+//
+//        League league = new League(new Player[]{player6, player4, player1, player2, player5, player3});
+//
+//        League league = new League(new Player[]{player6, player4, player1, player2, player5, player3});
+//
+//        Player[] bottomPlayers = league.getBottom(7);
+//
+//        for (Player player : bottomPlayers) {
+//            System.out.println(player);
+//        }
+
+
+
+
+//        pocu();
+//        G02_test();
     }
 
     public static void G02_test() {
