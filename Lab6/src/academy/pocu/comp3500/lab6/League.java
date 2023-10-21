@@ -73,6 +73,9 @@ public class League {
 
         traverseInOrderMatchNode(this.players, playerTreeNode, false);
 
+        this.diff = 0;
+        this.minDiff = Integer.MAX_VALUE;
+
         return this.matchNode.getPlayer();
     }
 
@@ -103,7 +106,7 @@ public class League {
     public boolean leave(final Player player) {
         TreeNode findTreeNode = getTreeNodeOrNull(this.players, player);
         if (findTreeNode != null) {
-            findPreSuc(this.players, findTreeNode);
+            traverseInOrderPreSuc(this.players, findTreeNode, false);
             if (this.preNode == null && this.sucNode != null) {
                 findTreeNode.setPlayer(this.sucNode.getPlayer());
                 this.sucNode = null;
@@ -115,6 +118,9 @@ public class League {
             if (this.preNode != null && this.sucNode == null) {
                 findTreeNode.setPlayer(this.preNode.getPlayer());
                 this.preNode = null;
+
+                this.playersCnt--;
+                return true;
             }
 
             // preNode, sucNode 모두 있을 경우
@@ -222,8 +228,8 @@ public class League {
         return getBottomRecursive(current.getRight(), result, index, size);
     }
 
-    private void traverseInOrderMatchNode(TreeNode treeNode, TreeNode targetNode, boolean isMathNode) {
-        if (isMathNode) {
+    private void traverseInOrderMatchNode(TreeNode treeNode, TreeNode targetNode, boolean isMatchNode) {
+        if (isMatchNode) {
             return;
         }
 
@@ -231,18 +237,17 @@ public class League {
             return;
         }
 
-        traverseInOrderMatchNode(treeNode.getLeft(), targetNode, isMathNode); // left
+        traverseInOrderMatchNode(treeNode.getLeft(), targetNode, isMatchNode); // left
 
         if (targetNode.getPlayer().getRating() != treeNode.getPlayer().getRating()) {
-            this.diff = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());
+            this.diff = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());;
 
             if (this.diff <= this.minDiff) {
                 this.minDiff = this.diff;
                 this.matchNode = treeNode;
-                isMathNode = true;
             }
         }
-        traverseInOrderMatchNode(treeNode.getRight(), targetNode, isMathNode); // right
+        traverseInOrderMatchNode(treeNode.getRight(), targetNode, isMatchNode); // right
     }
 
     public void traverseInOrderPreSuc(TreeNode treeNode, TreeNode targetNode, boolean isPreSuc) {
@@ -278,19 +283,6 @@ public class League {
         }
 
         traverseInOrderPreSuc(treeNode.getRight(), targetNode, isPreSuc);
-    }
-
-    private void traverseInOrder(TreeNode treeNode) {
-        if (treeNode == null) {
-            return;
-        }
-
-        traverseInOrder(treeNode.getLeft());
-
-
-
-
-        traverseInOrder(treeNode.getRight());
     }
 
     public void findPreSuc(TreeNode treeNode, TreeNode targetNode) {
