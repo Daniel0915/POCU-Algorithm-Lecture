@@ -263,7 +263,7 @@ public class League {
         traverseInOrderMatchNode(treeNode.getLeft(), targetNode, isMatchNode); // left
 
         if (targetNode.getPlayer().getRating() != treeNode.getPlayer().getRating()) {
-            this.diff = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());;
+            this.diff = Math.abs(targetNode.getPlayer().getRating() - treeNode.getPlayer().getRating());
 
             if (this.diff <= this.minDiff) {
                 this.minDiff = this.diff;
