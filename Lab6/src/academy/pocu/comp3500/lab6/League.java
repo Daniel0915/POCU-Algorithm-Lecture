@@ -118,17 +118,26 @@ public class League {
     }
 
     public boolean join(final Player player) {
-        if (getTreeNodeOrNull(this.players, player) != null) {
+        if (this.playersCnt == 0) {
             return false;
         }
-        insertRecursive(this.players, player);
-        this.playersCnt++;
-        return true;
+
+        if (getTreeNodeOrNull(this.players, player) == null) {
+            insertRecursive(this.players, player);
+            this.playersCnt++;
+            return true;
+        }
+        return false;
     }
 
     public boolean leave(final Player player) {
         TreeNode findTreeNode = getTreeNodeOrNull(this.players, player);
         if (findTreeNode != null) {
+            if (this.playersCnt == 1) {
+                this.players = null;
+                return true;
+            }
+
             traverseInOrderPreSuc(this.players, findTreeNode, false);
             if (this.preNode == null && this.sucNode != null) {
                 findTreeNode.setPlayer(this.sucNode.getPlayer());
