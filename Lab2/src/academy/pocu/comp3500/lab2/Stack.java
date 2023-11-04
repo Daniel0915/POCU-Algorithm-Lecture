@@ -8,16 +8,20 @@ public final class Stack {
     private int topIndex = 0;
     public void push(final int data) {
 
-        if (rootNode == null) {
-            rootNode = new Node(data);
-            tailNode = rootNode;
-            return;
-        }
 
-        Node newNode = new Node(data);
-        tailNode.setNext(newNode);
-        tailNode = newNode;
-        topIndex++;
+
+
+
+//        if (rootNode == null) {
+//            rootNode = new Node(data);
+//            tailNode = rootNode;
+//            return;
+//        }
+//
+//        Node newNode = new Node(data);
+//        tailNode.setNext(newNode);
+//        tailNode = newNode;
+//        topIndex++;
     }
 
     public int peek() {

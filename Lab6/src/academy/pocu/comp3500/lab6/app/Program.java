@@ -9,8 +9,18 @@ public class Program {
     public static void main(String[] args) {
         Player player1 = new Player(1, "player1", 4);
         Player player2 = new Player(2, "player2", 6);
+        Player player3 = new Player(3, "player3", 7);
+//
+//        League league = new League(new Player[]{ player1, player2 });
 
-        League league = new League(new Player[]{ player1, player2 });
+        League emptyLeague = new League();
+
+        System.out.println(emptyLeague.join(player2));
+        System.out.println(emptyLeague.join(player1));
+
+        System.out.println(emptyLeague.leave(player1));
+
+        System.out.println(emptyLeague.getPlayers());
 
 //        pocu();
 //        G02_test();

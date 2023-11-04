@@ -38,6 +38,7 @@ public final class MissionControl {
             }
 
             // mid 기준 오른쪽
+            // altitudes[mid - 1] < altitudes[mid] < altitudes[mid + 1]
             if (altitudes[mid] > altitudes[mid - 1] && altitudes[mid] < altitudes[mid + 1]) {
                 start = mid + 1;
                 // mid 기준 왼쪽

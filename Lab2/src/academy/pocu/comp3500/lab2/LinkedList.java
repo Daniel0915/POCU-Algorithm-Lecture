@@ -5,13 +5,11 @@ import academy.pocu.comp3500.lab2.datastructure.Node;
 public final class LinkedList {
 
     public static Node append(final Node rootOrNull, final int data) {
-        if (rootOrNull == null) {
-            Node head = new Node(data);
-            // 초기화
-            return head;
-        }
-
         Node newNode = new Node(data);
+
+        if (rootOrNull == null) {
+            return newNode;
+        }
 
         Node node = rootOrNull;
 
@@ -30,39 +28,46 @@ public final class LinkedList {
     public static Node prepend(final Node rootOrNull, final int data) {
         Node newNode = new Node(data);
 
+        if (rootOrNull == null) {
+            return newNode;
+        }
+
+
         newNode.setNext(rootOrNull);
 
         return newNode;
     }
 
     public static Node insertAt(final Node rootOrNull, final int index, final int data) {
-        if (index < 0) {
-            return rootOrNull;
-        }
 
-        int lastNodeIndex = getNodeLastIndex(rootOrNull);
-
-        // index가 유효한 범위 밖이라면 아무 일도 일어나지 않습니다.
-        if (lastNodeIndex < index - 1) {
-            return rootOrNull;
-        }
-
-        // 첫번째 index 에 넣을 때
+        // head Node 에 넣는 것으로 판단
         if (index == 0) {
-            Node newNode = new Node(data);
-            newNode.setNext(rootOrNull);
-            return newNode;
+            return LinkedList.prepend(rootOrNull, data);
         }
 
-        // insert 해야하는 노드 앞
+        if (index < 0 || rootOrNull == null) {
+            return rootOrNull;
+        }
+
+        int nodeIndex = 0;
         Node preNode = rootOrNull;
-        for (int i = 0; i < index - 1; i++) {
-            preNode = preNode.getNextOrNull();
-        }
 
-        Node newNode = new Node(data);
-        newNode.setNext(preNode.getNextOrNull());
-        preNode.setNext(newNode);
+        while (nodeIndex != index) {
+            if (nodeIndex == (index - 1)) {
+
+                if (preNode == null) {
+                    throw new IllegalArgumentException("Invalid index");
+                }
+
+                Node newNode = new Node(data);
+                // 이전 노드
+                newNode.setNext(preNode.getNextOrNull());
+                preNode.setNext(newNode);
+                break;
+            }
+            preNode = preNode.getNextOrNull();
+            nodeIndex++;
+        }
 
         return rootOrNull;
 

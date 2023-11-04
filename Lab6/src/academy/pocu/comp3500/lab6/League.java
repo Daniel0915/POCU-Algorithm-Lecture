@@ -31,7 +31,6 @@ public class League {
             insertRecursive(playersNode, players[i]);
         }
         this.players = playersNode;
-        this.arrayTreeNode = new ArrayList<>();
     }
 
     public TreeNode getPlayers() {
@@ -118,12 +117,8 @@ public class League {
     }
 
     public boolean join(final Player player) {
-        if (this.playersCnt == 0) {
-            return false;
-        }
-
         if (getTreeNodeOrNull(this.players, player) == null) {
-            insertRecursive(this.players, player);
+            this.players = insertRecursive(this.players, player);
             this.playersCnt++;
             return true;
         }
@@ -139,17 +134,18 @@ public class League {
             }
 
             traverseInOrderPreSuc(this.players, findTreeNode, false);
+
+            // 지울 대상이 트리 중에서 가장 작은 수일 경우(트리의 가장 왼쪽에 있음)
             if (this.preNode == null && this.sucNode != null) {
-                findTreeNode.setPlayer(this.sucNode.getPlayer());
-                this.sucNode = null;
+                findTreeNode = null;
 
                 this.playersCnt--;
                 return true;
             }
 
+            // 지울 대상이 트리 중에서 가장 높은 수일 경우(트리의 가장 오른쪽에 있음)
             if (this.preNode != null && this.sucNode == null) {
-                findTreeNode.setPlayer(this.preNode.getPlayer());
-                this.preNode = null;
+                findTreeNode = null;
 
                 this.playersCnt--;
                 return true;
@@ -165,8 +161,8 @@ public class League {
         return false;
     }
 
-    public static TreeNode insertRecursive(final TreeNode treeNode, Player player) {
-        if (treeNode == null) {
+    public TreeNode insertRecursive(final TreeNode treeNode, Player player) {
+        if (treeNode == null || this.playersCnt == 0) {
             return new TreeNode(player);
         }
 
