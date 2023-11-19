@@ -1,8 +1,5 @@
 package academy.pocu.comp3500.lab9.data;
 
-import academy.pocu.comp3500.lab9.data.Task;
-import java.util.Arrays;
-
 
 public class ProfitCalculator {
     public static int findMaxProfit(final Task[] tasks, final int[] skillLevels) {

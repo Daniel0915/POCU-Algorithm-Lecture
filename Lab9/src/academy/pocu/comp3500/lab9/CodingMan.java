@@ -21,6 +21,10 @@ public class CodingMan {
                 if (clips[i].getStartTime() > clips[i + 1].getEndTime()) {
                     return -1;
                 }
+
+                if (clips[i].getEndTime() < clips[i + 1].getStartTime()) {
+                    return -1;
+                }
             }
 
             if (i == clips.length - 1 && clips.length > 1) {

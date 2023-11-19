@@ -44,7 +44,7 @@ public class PyramidBuilder {
         int pivotPos = partition(arr, left, right);
 
         quickSortRecursive(arr, left, pivotPos - 1);
-        quickSortRecursive(arr,pivotPos + 1 , right);
+        quickSortRecursive(arr, pivotPos + 1, right);
     }
 
     private static int partition(int[] arr, int left, int right) {

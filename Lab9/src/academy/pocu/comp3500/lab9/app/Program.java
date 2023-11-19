@@ -11,38 +11,36 @@ import java.util.List;
 public class Program {
 
     public static void main(String[] args) {
-        // CodingMan
-        VideoClip[] clips = new VideoClip[]{
-                new VideoClip(0, 10),
-        };
-        int airTime = 10;
-
-        int count = CodingMan.findMinClipsCount(clips, airTime);
-
-        assert (count == 1);
-
-        clips = new VideoClip[]{
-                new VideoClip(30, 60),
-                new VideoClip(0, 20)
-        };
-        airTime = 60;
-
-        count = CodingMan.findMinClipsCount(clips, airTime);
-
-        assert (count == -1);
-
-        clips = new VideoClip[]{
-                new VideoClip(0, 5),
-                new VideoClip(0, 20),
-                new VideoClip(5, 30),
-                new VideoClip(25, 35),
-                new VideoClip(35, 70),
-                new VideoClip(50, 75)
-        };
-        airTime = 60;
-
-        count = CodingMan.findMinClipsCount(clips, airTime);
-
-        assert (count == 4);
+        test7();
+        test8();
+        test9();
     }
+
+    public static void test9() {
+        VideoClip[] clips1 = new VideoClip[]{
+                new VideoClip(0, 7),
+                new VideoClip(7, 15)
+        };
+        int count1 = CodingMan.findMinClipsCount(clips1, 35);
+        assert (count1 == -1);
+    }
+
+    public static void test8() {
+        VideoClip[] clips1 = new VideoClip[]{
+                new VideoClip(0, 7),
+                new VideoClip(8, 15),
+                new VideoClip(15, 20),
+                new VideoClip(20, 25),
+                new VideoClip(25, 35)
+        };
+        int count1 = CodingMan.findMinClipsCount(clips1, 35);
+        assert (count1 == -1);
+    }
+
+    public static void test7() {
+        VideoClip[] clips1 = new VideoClip[]{};
+        int count1 = CodingMan.findMinClipsCount(clips1, 35);
+        assert (count1 == -1);
+    }
+
 }
