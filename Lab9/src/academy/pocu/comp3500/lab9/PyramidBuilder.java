@@ -1,7 +1,5 @@
 package academy.pocu.comp3500.lab9;
 
-import academy.pocu.comp3500.assignment2.datastructure.ArrayList;
-
 public class PyramidBuilder {
     public static int findMaxHeight(final int[] widths, int statue) {
         if (widths.length <= 1) {
