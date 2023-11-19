@@ -31,6 +31,10 @@ public class CodingMan {
                 if (clips[i].getStartTime() > clips[i - 1].getEndTime()) {
                     return -1;
                 }
+
+                if (clips[i].getEndTime() < time) {
+                    return -1;
+                }
             }
 
             if (i == 0) {
