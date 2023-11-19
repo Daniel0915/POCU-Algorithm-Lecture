@@ -13,14 +13,14 @@ public class CodingMan {
         // 2. 첫번째 요소의 startTime 이 0 이 아니라면 -1 반환
 
         for (int i = 0; i < clips.length; ++i) {
-            if (i != clips.length -1) {
+            if (i != clips.length - 1) {
                 if (clips[i].getStartTime() > clips[i + 1].getEndTime()) {
                     return -1;
                 }
             }
 
-            if (i == clips.length -1 && clips.length > 1) {
-                if (clips[i].getStartTime() > clips[i -1].getEndTime()) {
+            if (i == clips.length - 1 && clips.length > 1) {
+                if (clips[i].getStartTime() > clips[i - 1].getEndTime()) {
                     return -1;
                 }
             }

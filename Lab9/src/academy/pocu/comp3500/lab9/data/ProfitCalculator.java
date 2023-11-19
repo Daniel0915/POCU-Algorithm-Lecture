@@ -6,6 +6,10 @@ import java.util.Arrays;
 
 public class ProfitCalculator {
     public static int findMaxProfit(final Task[] tasks, final int[] skillLevels) {
+        if (skillLevels.length == 0 || tasks.length == 0) {
+            return 0;
+        }
+
         int maxProfit = 0;
 
         // 1. 수익 기준 내림차순 정렬
