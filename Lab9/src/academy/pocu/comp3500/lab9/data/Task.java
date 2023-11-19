@@ -16,4 +16,12 @@ public final class Task {
     public int getProfit() {
         return profit;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "difficulty=" + difficulty +
+                ", profit=" + profit +
+                '}';
+    }
 }
