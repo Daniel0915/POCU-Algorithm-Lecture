@@ -5,6 +5,10 @@ import academy.pocu.comp3500.lab9.data.VideoClip;
 
 public class CodingMan {
     public static int findMinClipsCount(final VideoClip[] clips, int time) {
+        if (clips.length == 0) {
+            return -1;
+        }
+
         int clipsCnt = 0;
 
         // 1. 시작 시간이 이른것으로 정렬(오름차순)
