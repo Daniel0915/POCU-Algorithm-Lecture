@@ -1,29 +1,20 @@
 package academy.pocu.comp3500.lab6.app;
 
-import academy.pocu.comp3500.assignment2.datastructure.ArrayList;
 import academy.pocu.comp3500.lab6.League;
 import academy.pocu.comp3500.lab6.leagueofpocu.Player;
 
 public class Program {
 
     public static void main(String[] args) {
-        Player player1 = new Player(1, "player1", 4);
-        Player player2 = new Player(2, "player2", 6);
-        Player player3 = new Player(3, "player3", 7);
-//
-//        League league = new League(new Player[]{ player1, player2 });
+        Player player1 = new Player(1, "player1", 12);
+        Player player2 = new Player(2, "player2", 17);
+        Player player3 = new Player(3, "player3", 11);
+        Player player4 = new Player(4, "player4", 18);
+        Player player5 = new Player(5, "player5", 10);
 
-        League emptyLeague = new League();
+        League league = new League(new Player[]{player1, player2, player3, player4, player5});
 
-        System.out.println(emptyLeague.join(player2));
-        System.out.println(emptyLeague.join(player1));
-
-        System.out.println(emptyLeague.leave(player1));
-
-        System.out.println(emptyLeague.getPlayers());
-
-//        pocu();
-//        G02_test();
+        Player[] topPlayers = league.getTop(3); // player4, player2, player1
     }
 
     public static void G02_test() {
@@ -92,7 +83,8 @@ public class Program {
         Player player5 = new Player(5, "player5", 11);
         Player player6 = new Player(6, "player6", 12);
 
-        League league = new League(new Player[]{player6, player4, player1, player2, player5, player3});
+        League league = new League(new Player[]{player6, player4, player1, player2,
+                player5, player3});
 
         // findMatchOrNull()
         Player match = league.findMatchOrNull(player3);

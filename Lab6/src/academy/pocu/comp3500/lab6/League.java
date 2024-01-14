@@ -1,7 +1,6 @@
 package academy.pocu.comp3500.lab6;
 
 import academy.pocu.comp3500.lab6.leagueofpocu.Player;
-import java.util.ArrayList;
 import java.util.List;
 
 public class League {
@@ -209,8 +208,10 @@ public class League {
                 return treeNode.getLeft();
             }
 
-            int leftDiff = Math.abs(treeNode.getPlayer().getRating() - treeNode.getLeft().getPlayer().getRating());
-            int rightDiff = Math.abs(treeNode.getPlayer().getRating() - treeNode.getRight().getPlayer().getRating());
+            int leftDiff = Math.abs(
+                    treeNode.getPlayer().getRating() - treeNode.getLeft().getPlayer().getRating());
+            int rightDiff = Math.abs(
+                    treeNode.getPlayer().getRating() - treeNode.getRight().getPlayer().getRating());
 
             if (leftDiff >= rightDiff) {
                 return treeNode.getRight();
