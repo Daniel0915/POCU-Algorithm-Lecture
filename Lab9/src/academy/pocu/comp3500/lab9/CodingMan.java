@@ -1,6 +1,5 @@
 package academy.pocu.comp3500.lab9;
 
-import academy.pocu.comp3500.lab9.data.Task;
 import academy.pocu.comp3500.lab9.data.VideoClip;
 
 public class CodingMan {
@@ -41,7 +40,7 @@ public class CodingMan {
                 if (clips[i].getStartTime() != 0) {
                     return -1;
                 }
-                // 3. 정렬된 clips 의 요소들을 time >= endTime 이면 count +1
+                // 3. 정렬된 clips 의 요소들을 time >= endTime 이면 count + 1
             }
 
             // 4. 그런데 그 전 요소의 startTime, endTime 이 현재 시간 안에 포함된다면 count 제외 (단, 첫번째 요소는 해당 조건 제외)

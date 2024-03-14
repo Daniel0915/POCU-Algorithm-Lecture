@@ -1,22 +1,13 @@
-package academy.pocu.comp3500.lab9.data;
+package academy.pocu.comp3500.lab9_pra.data;
 
 
 public class ProfitCalculator {
     public static int findMaxProfit(final Task[] tasks, final int[] skillLevels) {
-        quickSort(tasks);
 
-        int maxProfit = 0;
+        // 각 직원은 일감 하나만을 완료할 수 있지만 그 직원의 실력 수준이 최소 일감의 난이도만큼은 되어야 그 일을 할 수 있습니다.
 
-        for (int skill : skillLevels) {
-            for (Task task : tasks) {
-                if (skill >= task.getDifficulty()) {
-                    maxProfit += task.getProfit();
-                    break;
-                }
-            }
-        }
-
-        return maxProfit;
+        // 한 일감은 여러 직원에게 할당될 수 있고, 이럴 경우 그 일은 여러 번 완료되게 됩니다.
+        return 0;
     }
 
     private static void quickSort(Task[] tasks) {
