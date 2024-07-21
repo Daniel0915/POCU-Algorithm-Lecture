@@ -3,6 +3,7 @@ package academy.pocu.comp3500.lab10.project;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public final class Task {
     private final String title;
@@ -30,6 +31,21 @@ public final class Task {
 
     public List<Task> getPredecessors() {
         return Collections.unmodifiableList(this.predecessors);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        Task task = (Task) o;
+        return Objects.equals(title, task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, predecessors, estimate);
     }
 
     public int getEstimate() {
