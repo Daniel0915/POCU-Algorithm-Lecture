@@ -349,7 +349,7 @@ public class BtsBinaryTree {
         // We reach here when root is the node
         // to be deleted.
 
-        // If one of the children is empty
+        // If One of the children is empty
         if (root.left == null) {
             Node temp = root.right;
             return temp;

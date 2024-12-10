@@ -378,7 +378,7 @@ public class League {
         }
 
 
-        // If one of the children is empty
+        // If One of the children is empty
         if (root.getLeft() == null) {
             TreeNode temp = root.getRight();
             return temp;

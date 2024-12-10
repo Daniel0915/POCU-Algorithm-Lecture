@@ -2,143 +2,74 @@ package academy.pocu.comp3500.lab8;
 
 import academy.pocu.comp3500.lab8.maze.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public final class MazeSolver {
+    // 북, 남, 동, 서
+    static int[] dX = {0, 0, 1, -1};
+    static int[] dY = {1, -1, 0, 0};
+
     public static List<Point> findPath(final char[][] maze, final Point start) {
-        Point cur = start;
-        Stack<Point> crossPoint = new Stack<>();
-        Stack<List<Point>> logs = new Stack<>();
-        List<Point> tmpLog = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        int[][] intVisited = new int[maze.length][maze[0].length];
 
-        while (true) {
+        List<Point> points = new ArrayList<>();
+        bfs(maze, start, visited, intVisited, points);
+        print2DArray(intVisited);
 
-            if (isExit(maze, cur)) {
-                tmpLog.add(cur);
-                logs.push(tmpLog);
-                return sumLogs(logs);
+        return points;
+    }
+
+    private static void bfs(char[][] maze, Point start, boolean[][] visited, int[][] intVisited, List<Point> points) {
+        int x = start.getY();
+        int y = start.getX();
+        visited[x][y] = true;
+        intVisited[x][y] = 1;
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(new Point(x, y));
+
+        int[] exit = null;
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            Point current = queue.remove();
+            int cX = current.getX();
+            int cY = current.getY();
+
+            if (maze[cX][cY] == 'E') {
+                exit = new int[]{cX, cY};
+                depth = intVisited[cX][cY];
+                break;
             }
 
-            maze[cur.getY()][cur.getX()] = 'x'; // 이미 지났던 자리는 x 로 막기
+            for (int i = 0; i < 4; i++) {
+                int nX = cX + dX[i];
+                int nY = cY + dY[i];
 
-            Stack<Point> movable = getMovablePoint(maze, cur);
-
-            if (movable.size() == 0) {
-                // 다 막혀서 옴, 다 막히진 않음
-                if (crossPoint.size() == 0) {
-                    return new ArrayList<>();
+                if (nX < 0 || nX > maze.length - 1 || nY < 0 || nY > maze[0].length - 1) {
+                    continue;
                 }
 
-                logs.add(tmpLog);
-                logs.pop();
-                cur = crossPoint.pop();
-                tmpLog = new ArrayList<>();
-                continue;
+                if (!visited[nX][nY] && (maze[nX][nY] == ' ' || maze[nX][nY] == 'E')) {
+                    visited[nX][nY] = true;
+                    intVisited[nX][nY] = intVisited[cX][cY] + 1;
+                    queue.add(new Point(nX, nY));
+                }
             }
-
-            if (movable.size() >= 2) {
-                logs.push(tmpLog);
-                tmpLog = new ArrayList<>();
-                crossPoint.push(cur);
-            }
-
-            tmpLog.add(cur);
-            cur = movable.pop();
         }
+
+        if (exit == null) {
+            return;
+        }
+
     }
 
-    public static Stack<Point> getMovablePoint(char[][] maze, Point loc) {
-        int x = loc.getX();
-        int y = loc.getY();
-        Stack<Point> movable = new Stack<>();
 
-        if (x - 1 >= 0 && maze[y][x - 1] != 'x') { // 북
-            movable.push(new Point(x -1, y));
+
+    private static void print2DArray(int[][] array) {
+        for (int[] row : array) {
+            System.out.println(Arrays.toString(row));
         }
-
-        if (y - 1 >= 0 && maze[y -1][x] != 'x') { // 서
-            movable.push(new Point(x, y - 1));
-        }
-
-        if (x + 1 < maze[0].length && maze[y][x + 1] != 'x') { // 남
-            movable.push(new Point(x + 1, y));
-        }
-
-        if (y + 1 < maze.length && maze[y + 1][x] != 'x') { // 동
-            movable.push(new Point(x, y + 1));
-        }
-
-        return movable;
-    }
-
-    public static Stack<Character> getMovablePointTest(char[][] maze, Point loc) {
-        int x = loc.getX();
-        int y = loc.getY();
-        Stack<Character> movable = new Stack<>();
-
-        if (x - 1 >= 0 && maze[x - 1][y] != 'x') { // 북
-            movable.push(maze[x - 1][y]);
-        }
-
-        if (y - 1 >= 0 && maze[x][y - 1] != 'x') { // 서
-            movable.push(maze[x][y - 1]);
-        }
-
-        if (x + 1 < maze[0].length && maze[x + 1][y] != 'x') { // 남
-            movable.push(maze[x + 1][y]);
-        }
-
-        if (y + 1 < maze.length && maze[x][y + 1] != 'x') { // 동
-            movable.push(maze[x][y + 1]);
-        }
-
-        return movable;
-    }
-
-    private static List<Point> sumLogs(Stack<List<Point>> logs) {
-        List<Point> result = new ArrayList<>();
-        Stack<List<Point>> reverse = new Stack<>();
-
-
-        while (!logs.isEmpty()) {
-            reverse.add(logs.pop());
-        }
-
-        while (!reverse.isEmpty()) {
-            result.addAll(reverse.pop());
-        }
-
-        return result;
-    }
-
-    private static boolean isExit(char[][] maze, Point loc) {
-        return maze[loc.getY()][loc.getX()] == 'E';
-    }
-
-    public static Stack<Point> getMovablePointTest2(char[][] maze, Point loc) {
-        int x = loc.getX();
-        int y = loc.getY();
-        Stack<Point> movable = new Stack<>();
-
-        if (x - 1 >= 0 && maze[x - 1][y] != 'x') { // 북
-            movable.push(new Point(x -1, y));
-        }
-
-        if (y - 1 >= 0 && maze[x][y - 1] != 'x') { // 서
-            movable.push(new Point(x, y - 1));
-        }
-
-        if (x + 1 < maze[0].length && maze[x + 1][y] != 'x') { // 남
-            movable.push(new Point(x + 1, y));
-        }
-
-        if (y + 1 < maze.length && maze[x][y + 1] != 'x') { // 동
-
-            movable.push(new Point(x, y + 1));
-        }
-
-        return movable;
+        System.out.println(); // 줄바꿈을 추가하여 가독성 향상
     }
 }
