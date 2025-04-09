@@ -50,4 +50,21 @@ public class Node {
 
         printTree(node.left, depth + 1);  // 왼쪽 나중
     }
+
+    public static Node getNodeOrNull(Node node, int data) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.data == data) {
+            return node;
+        }
+
+        // 왼쪽
+        if (data < node.data) {
+            return getNodeOrNull(node.left, data);
+        } else {
+            return getNodeOrNull(node.right, data);
+        }
+    }
 }
